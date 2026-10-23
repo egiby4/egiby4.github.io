@@ -81,6 +81,7 @@ const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const icons={journey:'🧭',award:'🏅',project:'🚀',skill:'✨'};
 function persist(){try{localStorage.setItem(STORE,JSON.stringify(records));return true}catch(e){notify('저장 공간이 부족해요. 백업을 내려받아 주세요.');return false}}
 function notify(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
+const baseProjectsHTML=$('#projectsGrid').innerHTML;
 function renderRecords(){
  const journeys=records.filter(r=>r.type==='journey').slice().reverse();
  const awards=records.filter(r=>r.type==='award').slice().reverse();
@@ -89,7 +90,7 @@ function renderRecords(){
  const eventHTML=r=>'<article class="event"><time>'+esc(r.date||'기록됨')+'</time><div><h3>'+esc(r.title)+'</h3><p>'+esc(r.desc||'조금 더 자세한 이야기를 다음에 추가해 보세요.')+'</p></div></article>';
  if(journeys.length)$('#timeline').innerHTML=eventHTML({date:'2026 · START',title:'포트폴리오를 시작했어요',desc:'작은 기록부터 차곡차곡 쌓아 가는 중입니다.'})+journeys.map(eventHTML).join('');
  if(awards.length)$('#awardsGrid').innerHTML=awards.map(r=>'<article class="card"><div class="card-top"><div class="iconbox">'+icons.award+'</div><span class="tag">'+esc(r.date||'MILESTONE')+'</span></div><h3>'+esc(r.title)+'</h3><p>'+esc(r.desc||'성취한 순간을 기록했어요.')+'</p><div class="meta">'+(r.tags||[]).map(t=>'<span>'+esc(t)+'</span>').join('')+'</div></article>').join('');
- if(projects.length)$('#projectsGrid').innerHTML=projects.map(r=>'<article class="card project-card"><span class="tag">MY PROJECT</span><div class="project-icon">'+icons.project+'</div><h3>'+esc(r.title)+'</h3><p>'+esc(r.desc||'프로젝트 설명을 추가해 보세요.')+'</p><div class="meta">'+(r.tags||[]).map(t=>'<span>'+esc(t)+'</span>').join('')+'</div></article>').join('')+$('#projectsGrid').innerHTML;
+ if(projects.length)$('#projectsGrid').innerHTML=projects.map(r=>'<article class="card project-card"><span class="tag">MY PROJECT</span><div class="project-icon">'+icons.project+'</div><h3>'+esc(r.title)+'</h3><p>'+esc(r.desc||'프로젝트 설명을 추가해 보세요.')+'</p><div class="meta">'+(r.tags||[]).map(t=>'<span>'+esc(t)+'</span>').join('')+'</div></article>').join('')+baseProjectsHTML;
  $('#statProjects').textContent=String(2+projects.length).padStart(2,'0');$('#statAwards').textContent=String(1+awards.length).padStart(2,'0');$('#statSkills').textContent=String(4+skills.length).padStart(2,'0');$('#statUpdates').textContent=String(1+records.length).padStart(2,'0');
 }
 renderRecords();
